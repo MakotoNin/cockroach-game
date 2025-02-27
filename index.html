@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ゴキブリ退治ゲーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-container">スコア: <span id="score">0</span></div>
+            <div class="time-container">残り時間: <span id="time">60</span>秒</div>
+            <div class="kills-container">退治数: <span id="kills">0</span>匹</div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-controls">
+            <button id="startButton">ゲーム開始</button>
+            <button id="restartButton" style="display: none;">リスタート</button>
+        </div>
+        <div id="gameOver" class="game-over" style="display: none;">
+            <h2>ゲームオーバー</h2>
+            <p>最終スコア: <span id="finalScore">0</span></p>
+            <p>退治したゴキブリ: <span id="finalKills">0</span>匹</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

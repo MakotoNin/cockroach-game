@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SVG to PNG Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .converter-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .download-links {
+            margin-top: 20px;
+        }
+        .download-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .svg-container svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px dashed #ccc;
+        }
+        .png-output {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>SVG to PNG Converter</h1>
+    
+    <div class="converter-section">
+        <h2>ゴキブリ画像</h2>
+        <div id="cockroachContainer" class="svg-container"></div>
+        <img id="cockroachOutput" class="png-output" alt="Converted Cockroach PNG">
+        <div class="download-links" id="cockroachDownload"></div>
+    </div>
+    
+    <div class="converter-section">
+        <h2>退治跡画像</h2>
+        <div id="splatContainer" class="svg-container"></div>
+        <img id="splatOutput" class="png-output" alt="Converted Splat PNG">
+        <div class="download-links" id="splatDownload"></div>
+    </div>
+    
+    <div class="converter-section">
+        <h2>スプレー画像</h2>
+        <div id="sprayContainer" class="svg-container"></div>
+        <img id="sprayOutput" class="png-output" alt="Converted Spray PNG">
+        <div class="download-links" id="sprayDownload"></div>
+    </div>
+    
+    <div class="converter-section">
+        <h2>背景画像</h2>
+        <div id="backgroundContainer" class="svg-container"></div>
+        <img id="backgroundOutput" class="png-output" alt="Converted Background PNG">
+        <div class="download-links" id="backgroundDownload"></div>
+    </div>
+    
+    <script>
+        // SVGファイルのリスト
+        const svgFiles = [
+            { name: 'cockroach', path: 'images/cockroach.svg', container: 'cockroachContainer', output: 'cockroachOutput', download: 'cockroachDownload' },
+            { name: 'splat', path: 'images/splat.svg', container: 'splatContainer', output: 'splatOutput', download: 'splatDownload' },
+            { name: 'spray', path: 'images/spray.svg', container: 'sprayContainer', output: 'sprayOutput', download: 'sprayDownload' },
+            { name: 'background', path: 'images/background.svg', container: 'backgroundContainer', output: 'backgroundOutput', download: 'backgroundDownload' }
+        ];
+        
+        // 各SVGファイルを処理
+        svgFiles.forEach(file => {
+            fetch(file.path)
+                .then(response => response.text())
+                .then(svgData => {
+                    // SVGをコンテナに表示
+                    document.getElementById(file.container).innerHTML = svgData;
+                    
+                    // SVG要素を取得
+                    const svgElement = document.getElementById(file.container).querySelector('svg');
+                    
+                    // SVGをPNGに変換
+                    convertSvgToPng(svgElement, file);
+                })
+                .catch(error => {
+                    console.error(`Error loading ${file.name}.svg:`, error);
+                });
+        });
+        
+        function convertSvgToPng(svgElement, fileInfo) {
+            // SVGの寸法を取得
+            const width = svgElement.getAttribute('width');
+            const height = svgElement.getAttribute('height');
+            
+            // SVGデータをXML文字列に変換
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            
+            // Base64エンコード
+            const svgBase64 = btoa(unescape(encodeURIComponent(svgData)));
+            const svgDataUrl = `data:image/svg+xml;base64,${svgBase64}`;
+            
+            // 画像オブジェクトを作成
+            const img = new Image();
+            img.src = svgDataUrl;
+            
+            img.onload = function() {
+                // キャンバスを作成
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                
+                // 描画コンテキストを取得
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                
+                // PNGデータURLを取得
+                const pngDataUrl = canvas.toDataURL('image/png');
+                
+                // 結果を表示
+                document.getElementById(fileInfo.output).src = pngDataUrl;
+                
+                // データURLをコンソールに出力（ダウンロード用）
+                console.log(`${fileInfo.name} PNG Data URL:`, pngDataUrl);
+                
+                // ダウンロードリンクを作成
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pngDataUrl;
+                downloadLink.download = `${fileInfo.name}.png`;
+                downloadLink.textContent = `${fileInfo.name}.png をダウンロード`;
+                downloadLink.className = 'download-link';
+                document.getElementById(fileInfo.download).appendChild(downloadLink);
+                
+                // 自動的にPNGファイルを保存
+                saveToFile(pngDataUrl, `images/${fileInfo.name}.png`);
+            };
+        }
+        
+        // データURLをファイルとして保存する関数（サーバーサイドの処理が必要）
+        function saveToFile(dataUrl, fileName) {
+            // この関数はサーバーサイドの処理が必要なため、実際には機能しません
+            // ブラウザ上でのみ動作するため、ダウンロードリンクを使用してください
+            console.log(`${fileName} would be saved if server-side processing was available.`);
+        }
+    </script>
+</body>
+</html> 

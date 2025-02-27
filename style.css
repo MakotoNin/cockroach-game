@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('images/kitchen_background.svg');
+    background-size: cover;
+    background-position: center;
+    touch-action: none; /* タッチデバイスでのスクロールを防止 */
+    overflow: hidden;
+}
+
+.game-container {
+    width: 90%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap; /* モバイル表示用にフレックスアイテムを折り返す */
+}
+
+/* モバイル向け調整 */
+@media (max-width: 600px) {
+    .game-header {
+        font-size: 16px;
+    }
+    
+    .game-container {
+        padding: 10px;
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-header {
+        font-size: 14px;
+    }
+    
+    /* モバイル表示時にヘッダーを上部に固定 */
+    .score-container, .time-container, .kills-container {
+        margin-bottom: 5px;
+        width: 30%;
+        text-align: center;
+    }
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 60vh; /* ビューポートに合わせた高さに調整 */
+    max-height: 500px;
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: crosshair;
+    display: block;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    touch-action: none; /* タッチデバイスでのスクロールを防止 */
+}
+
+.game-controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* モバイル表示用にフレックスアイテムを折り返す */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    /* モバイル用にタップエリアを大きく */
+    min-width: 120px;
+    min-height: 44px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* モバイル用のアクティブ状態 */
+button:active {
+    background-color: #3e8e41;
+    transform: translateY(1px);
+}
+
+#restartButton {
+    background-color: #f44336;
+}
+
+#restartButton:hover {
+    background-color: #d32f2f;
+}
+
+#restartButton:active {
+    background-color: #b71c1c;
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 80%;
+    max-width: 400px;
+}
+
+.game-over h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.game-over p {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.score-container, .time-container, .kills-container {
+    background-color: rgba(51, 51, 51, 0.8);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#score, #time, #kills, #finalScore, #finalKills {
+    color: #4CAF50;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* モバイル表示用のタッチ情報 */
+.touch-info {
+    text-align: center;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* モバイル端末用のスクロール防止 */
+@media (max-width: 800px) {
+    html, body {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+    
+    body {
+        -webkit-touch-callout: none; /* iOSでの長押しメニュー無効化 */
+        -webkit-user-select: none;   /* テキスト選択無効化 */
+        -webkit-tap-highlight-color: rgba(0,0,0,0); /* タップ時のハイライト無効化 */
+    }
+} 
